@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  etcd:
+    image: bitnami/etcd:latest
+    container_name: etcd-chat
+    ports:
+      - "3379:2379"
+      - "3380:2380"
+    environment:
+      - ETCD_ENABLE_V2=true
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://123.249.32.125:3379
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_NAME=etcd
+    volumes:
+      - ./components/etcd/data:/bitnami/etcd/data
+      - ./components/etcd/logs:/bitnami/etcd/logs
+    networks:
+      easy-chat:
+
+  redis:
+    image: redis:latest
+    ports:
+      - 16379:6379
+    container_name: redis-chat
+    volumes:
+      - ./components/redis/data:/data
+      - ./components/redis/config/redis.conf:/usr/local/redis/config/redis.conf
+    environment:
+      TZ: Asia/Shanghai
+    restart: always
+    networks:
+      easy-chat:
+    command: redis-server --requirepass easy-chat --appendonly yes
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - 13306:3306
+    container_name: mysql-chat
+    volumes:
+      - ./components/mysql/data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime
+    environment:
+      MYSQL_ROOT_PASSWORD: easy-chat
+    restart: always
+    networks:
+      easy-chat:
+
+networks:
+  easy-chat:
+    driver: bridge

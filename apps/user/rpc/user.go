@@ -1,13 +1,12 @@
 package main
 
 import (
+	"easy-chat/apps/user/rpc/internal/config"
+	"easy-chat/apps/user/rpc/internal/server"
+	"easy-chat/apps/user/rpc/internal/svc"
+	"easy-chat/apps/user/rpc/user"
 	"flag"
 	"fmt"
-
-	"chat-mic/apps/user/rpc/internal/config"
-	"chat-mic/apps/user/rpc/internal/server"
-	"chat-mic/apps/user/rpc/internal/svc"
-	"chat-mic/apps/user/rpc/user"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -16,7 +15,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var configFile = flag.String("f", "etc/user.yaml", "the config file")
+var configFile = flag.String("f", "etc/dev/user.yaml", "the config file")
 
 func main() {
 	flag.Parse()

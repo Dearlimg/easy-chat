@@ -2,3 +2,6 @@ goctl rpc protoc ./apps/user/rpc/user.proto --go_out=./apps/user/rpc/ --go-grpc_
 
 
  goctl rpc protoc user.proto --go_out=./ --go-grpc_out=./ --zrpc_out=./
+
+
+ goctl model mysql ddl -src="./deploy/sql/user.sql" -dir="./apps/user/models/" -c

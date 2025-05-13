@@ -28,7 +28,7 @@ message LoginReq {
 
 message LoginResp {
   string Token =1;
-  string password =2;
+  int64 expire =2;
 }
 
 message RegisterReq {
