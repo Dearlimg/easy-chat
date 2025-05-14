@@ -4,6 +4,7 @@ import (
 	"context"
 	"easy-chat/apps/user/models"
 	"errors"
+	"fmt"
 	"github.com/jinzhu/copier"
 
 	"easy-chat/apps/user/rpc/internal/svc"
@@ -39,6 +40,7 @@ func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoReq) (*user.GetUserIn
 	var resp user.UserEntity
 	copier.Copy(&resp, &userEntiy)
 
+	fmt.Println()
 	return &user.GetUserInfoResp{
 		User: &resp,
 	}, nil
