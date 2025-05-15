@@ -1,0 +1,13 @@
+Name: user
+Host: 0.0.0.0
+Port: 8888
+
+UserRpc:
+  Etcd:
+    Hosts:
+      - 123.249.32.125:3379
+    Key: user.rpc
+
+JwtAuth:
+  AccessSecret: durlim.xyz
+  AccessExpire: 8640000

@@ -7,15 +7,16 @@ import (
 	"easy-chat/apps/user/rpc/user"
 	"easy-chat/pkg/ctxdata"
 	"easy-chat/pkg/encrypt"
-	"errors"
+	"easy-chat/pkg/xerr"
+	"githu
 	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
 var (
-	ErrPhoneNotRegistered = errors.New("phone not registered")
-	ErrUserPwdErr         = errors.New("user password error")
+	ErrPhoneNotRegistered = xerr.New(xerr.SERVER_COMMON_ERROR, "手机号未注册")
+	ErrUserPwdErr         = xerr.New(xerr.SERVER_COMMON_ERROR, "密码错误")
 )
 
 type LoginLogic struct {
@@ -35,14 +36,14 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	userEntity, err := l.svcCtx.UsersModel.FindByPhone(l.ctx, in.Phone)
 	if err != nil {
-		if !errors.Is(err, models.ErrNotFound) {
-			return nil, ErrPhoneNotRegistered
+		if err == models.ErrNotFound {
+			return nil, errors.WithStack(ErrPhoneNotRegistered)
 		}
-		return nil, err
+		return nil, errors.Wrapf(xerr.NewDBErr(), "find user by phone failed,err: %v,req %v", err, in.Phone)
 	}
 
 	if !encrypt.ValidatePasswordHash(in.Password, userEntity.Password.String) {
-		return nil, ErrUserPwdErr
+		return nil, errors.WithStack(ErrUserPwdErr)
 	}
 
 	// 生成token
@@ -50,7 +51,7 @@ func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 	token, err := ctxdata.GetJwtToken(l.svcCtx.Config.Jwt.AccessSecret, now, l.svcCtx.Config.Jwt.AccessExpire,
 		userEntity.Id)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(xerr.NewDBErr(), "get jwt token failed,err: %v,req %v", err, in.Phone)
 	}
 
 	return &user.LoginResp{

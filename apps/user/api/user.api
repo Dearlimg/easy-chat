@@ -1,0 +1,39 @@
+syntax = "v1"
+
+info (
+	title:   "用户服务的实例对象"
+	desc:    "用户服务的实例对象"
+	author:  "Durlim"
+	email:   "1492568061@qq.com"
+	version: "v0.0.0"
+)
+
+import (
+	"domain.api"
+)
+
+@server (
+	prefix: v1/user
+	group:  user
+)
+service user {
+	@doc "用户注册"
+	@handler register
+	post /register (RegisterReq) returns (RegisterResp)
+
+	@doc "用户登录"
+	@handler login
+	post /login (LoginReq) returns (LoginResp)
+}
+
+@server (
+	prefix: v1/user
+	group:  user
+	jwt:    JwtAuth
+)
+service user {
+	@doc "获取用户信息"
+	@handler detail
+	get /user (UserInfoReq) returns (UserInfoResp)
+}
+
