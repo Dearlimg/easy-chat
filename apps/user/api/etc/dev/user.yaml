@@ -5,7 +5,7 @@ Port: 8888
 UserRpc:
   Etcd:
     Hosts:
-      - 123.249.32.125:3379
+      - 8.133.207.187:3379
     Key: user.rpc
 
 JwtAuth:

@@ -2,17 +2,17 @@ Name: user.rpc
 ListenOn: 0.0.0.0:10000
 Etcd:
   Hosts:
-  - 123.249.32.125:3379
+  - 8.133.207.187:3379
   Key: user.rpc
 
 Mysql:
-  DataSource: root:easy-chat@tcp(123.249.32.125:13306)/easy-chat?charset=utf8mb4
+  DataSource: root:easy-chat@tcp(8.133.207.187:13306)/easy-chat?charset=utf8mb4
 
 Cache:
-  - Host: 123.249.32.125:16379
+  - Host: 8.133.207.187:16379
     Type: node
     Pass: easy-chat
 
 Jwt:
-  AccessSecret: http://www.durlim.xyz
+  AccessSecret: durlim.xyz
   AccessExpire: 8640000

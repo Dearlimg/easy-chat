@@ -8,7 +8,7 @@ import (
 	"easy-chat/pkg/ctxdata"
 	"easy-chat/pkg/encrypt"
 	"easy-chat/pkg/xerr"
-	"githu
+	"github.com/pkg/errors"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
